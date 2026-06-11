@@ -15,7 +15,6 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.amber,
         primaryColor: Colors.amber,
-        scaffoldBackgroundColor: Colors.grey[100],
       ),
       home: SalesPage(),
     );
@@ -58,14 +57,12 @@ class _SalesPageState extends State<SalesPage> {
   @override
   void initState() {
     super.initState();
-    // ভরি, আনা, রতি, পয়েন্ট টাইপ করার সাথে সাথে গ্রামের অটোমেটিক হিসাব চালু করা
     voriController.addListener(_calculateGram);
     anaController.addListener(_calculateGram);
     ratiController.addListener(_calculateGram);
     pointController.addListener(_calculateGram);
   }
 
-  // ১. স্বর্ণের সঠিক আন্তর্জাতিক ওজন হিসাবের লজিক (১ ভরি = ১১.৬৬৪ গ্রাম)
   void _calculateGram() {
     double vori = double.tryParse(voriController.text) ?? 0.0;
     double ana = double.tryParse(anaController.text) ?? 0.0;
@@ -76,15 +73,12 @@ class _SalesPageState extends State<SalesPage> {
       return; 
     }
 
-    // ১ ভরি = ১৬ আনা = ৯৬ রতি = ৯৬০ পয়েন্ট
     double totalVori = vori + (ana / 16.0) + (rati / 96.0) + (point / 960.0);
     double totalGram = totalVori * 11.664;
 
-    // গ্রামের টেক্সট ফিল্ডে ৩ দশমিক স্থান পর্যন্ত অটো-আপডেট করা
     gramController.text = totalGram.toStringAsFixed(3);
   }
 
-  // ২. ডিভাইস গ্যালারি থেকে ছবি আপলোড সচল করার ফাংশন
   Future<void> _pickImage(bool isProduct) async {
     try {
       final XFile? pickedFile = await _picker.pickImage(
@@ -107,7 +101,6 @@ class _SalesPageState extends State<SalesPage> {
     }
   }
 
-  // ৩. ডিজিটাল বিক্রয় মেমো স্ক্রিনে সুন্দরভাবে প্রদর্শন করার ফাংশন
   void _showMemo() {
     String finalKhath = selectedKhath == 'অন্যান্য খাত (নিচে লিখুন)' 
         ? customKhathController.text 
@@ -134,23 +127,23 @@ class _SalesPageState extends State<SalesPage> {
             child: ListBody(
               children: [
                 SizedBox(height: 10),
-                Text('👤 ক্রেতার নাম: ${nameController.text.isEmpty ? "উল্লেখ নেই" : nameController.text}', style: TextStyle(fontWeight: FontWeight.w500)),
+                Text('👤 ক্রেতার নাম: ${nameController.text.isEmpty ? "উল্লেখ নেই" : nameController.text}'),
                 Text('📍 ঠিকানা: ${addressController.text.isEmpty ? "উল্লেখ নেই" : addressController.text}'),
                 Text('📞 মোবাইল: ${phoneController.text.isEmpty ? "কোড নাই" : phoneController.text}'),
                 Divider(color: Colors.amber, thickness: 1.5),
-                Text('⚖️ স্বর্ণের মোট ওজন:', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.amber[800])),
+                Text('⚖️ স্বর্ণের মোট ওজন:', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.amber)),
                 Text('- ভরি: ${voriController.text.isEmpty ? "০" : voriController.text} ভরি, ${anaController.text.isEmpty ? "০" : anaController.text} আনা, ${ratiController.text.isEmpty ? "০" : ratiController.text} রতি, ${pointController.text.isEmpty ? "০" : pointController.text} পয়েন্ট'),
                 Text('- গ্রামে হিসাব: ${gramController.text.isEmpty ? "০.০০০" : gramController.text} গ্রাম', style: TextStyle(fontWeight: FontWeight.bold)),
                 Divider(),
                 Text('💰 সোনার দর (ভরি): ${rateController.text.isEmpty ? "০" : rateController.text} টাকা'),
                 Text('🛠️ মোট মজুরি: ${totalWagesController.text.isEmpty ? "০" : totalWagesController.text} টাকা'),
-                Text('📂 বিক্রয়ের খাত: $finalKhath', style: TextStyle(color: Colors.blue[800], fontWeight: FontWeight.w500)),
+                Text('📂 বিক্রয়ের খাত: $finalKhath', style: TextStyle(color: Colors.blue, fontWeight: FontWeight.w500)),
                 Divider(color: Colors.amber, thickness: 1.5),
                 Row(
                   children: [
                     Icon(Icons.image, size: 18, color: productImage != null ? Colors.green : Colors.red),
                     SizedBox(width: 5),
-                    Text('পণ্যের ছবি: ${productImage != null ? "সফলভাবে যুক্ত" : "আপলোড করা হয়নি"}'),
+                    Text('পণ্যের ছবি: ${productImage != null ? "সফলভাবে যুক্ত" : "নাই"}'),
                   ],
                 ),
                 SizedBox(height: 5),
@@ -158,7 +151,7 @@ class _SalesPageState extends State<SalesPage> {
                   children: [
                     Icon(Icons.credit_card, size: 18, color: idCardImage != null ? Colors.green : Colors.red),
                     SizedBox(width: 5),
-                    Text('আইডি কার্ড: ${idCardImage != null ? "সফলভাবে যুক্ত" : "আপলোড করা হয়নি"}'),
+                    Text('আইডি কার্ড: ${idCardImage != null ? "সফলভাবে যুক্ত" : "নাই"}'),
                   ],
                 ),
               ],
@@ -201,7 +194,6 @@ class _SalesPageState extends State<SalesPage> {
       appBar: AppBar(
         title: Text('জুয়েলারি বিক্রয় ও হিসাব', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
         backgroundColor: Colors.amber,
-        elevation: 0,
       ),
       body: SingleChildScrollView(
         padding: EdgeInsets.all(16.0),
@@ -210,7 +202,6 @@ class _SalesPageState extends State<SalesPage> {
           children: [
             Card(
               elevation: 4,
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
               child: Padding(
                 padding: EdgeInsets.all(12.0),
                 child: Column(
@@ -232,14 +223,29 @@ class _SalesPageState extends State<SalesPage> {
                       ElevatedButton.icon(
                         onPressed: () => _pickImage(true),
                         icon: Icon(Icons.camera_alt, color: Colors.white),
-                        label: Text('পণ্যের ছবি', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
-                        style: ElevatedButton.styleFrom(backgroundColor: Colors.blue, shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8))),
+                        label: Text('পণ্যের ছবি', style: TextStyle(color: Colors.white)),
+                        style: ElevatedButton.styleFrom(backgroundColor: Colors.blue),
                       ),
                       if (productImage != null) 
-                        Text('✓ ছবি যুক্ত হয়েছে', style: TextStyle(fontSize: 12, color: Colors.green, fontWeight: FontWeight.bold)),
+                        Text('✓ ছবি যুক্ত হয়েছে', style: TextStyle(fontSize: 12, color: Colors.green)),
                     ],
                   ),
                 ),
                 SizedBox(width: 10),
                 Expanded(
                   child: Column(
+                    children: [
+                      ElevatedButton.icon(
+                        onPressed: () => _pickImage(false),
+                        icon: Icon(Icons.credit_card, color: Colors.white),
+                        label: Text('বিক্রেতার আইডি', style: TextStyle(color: Colors.white)),
+                        style: ElevatedButton.styleFrom(backgroundColor: Colors.green),
+                      ),
+                      if (idCardImage != null) 
+                        Text('✓ আইডি যুক্ত হয়েছে', style: TextStyle(fontSize: 12, color: Colors.green)),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(height: 20),
